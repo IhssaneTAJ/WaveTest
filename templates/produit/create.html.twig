@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme formProduit 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+ <div class="container">
+ <div class="row">
+ <div class="col-md-3"></div>
+ <div class="col-md-6">
+    {% if editMode %}
+        <h1>Modifier un produit</h1>
+    {% else %}
+        <h2>Ajouter un nouveau produit</h2>
+    {% endif %}
+    
+
+    {{ form_start(formProduit) }}
+
+
+        {{ form_row(formProduit.titre, {'attr': {'placeholder': "Titre du produit"}}) }}
+        {{ form_row(formProduit.description, {'attr': {'placeholder': "Description du produit"}}) }}
+        {{ form_row(formProduit.prix, {'attr': {'placeholder': "Prix du produit"}}) }}
+        {{ form_row(formProduit.images, {'attr': {'placeholder': "Image du produit"}}) }}
+        {{ form_row(formProduit.quantite, {'attr': {'placeholder': "Quantite du produit"}}) }}
+
+        <button type="submit" class="btn btn-success">
+            {% if editMode %}
+                Modifier
+            {% else %}
+                Ajouter le produit
+            {% endif %}
+        </button>
+
+
+    {{ form_end(formProduit) }}
+    </div>
+ <div class="col-md-3"></div>
+
+    </div>
+
+
+
+
+
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des produits{% endblock %}
+
+{% block body %}
+<h1>Liste des produits</h1>
+
+{# <section class="articles"> #}
+    {# <table class="table"> #}
+    {# {% for produit in produits %} #}
+        {# <tr> #}
+        {# <td> #}
+        {# <h2>{{ produit.titre }}</h2> #}
+        {# <div class="content"> #}
+            {# <img src="{{ produit.images }}" alt=""> #}
+            {# <p><b>{{ produit.prix }} Dhs</b></p> #}
+        {# </div> #}
+        {# </td> #}
+        {# <td><a href="{{ path('produit_show', {'id': produit.id }) }}" class="btn btn-info">Détails</a><td> #}
+        {# <td><a href="{{ path('produit_edit', {'id': produit.id }) }}" class="btn btn-warning">Modifier</a></td> #}
+        {# <td><form method="POST" action="{{ path('produit_delete', {'id': produit.id }) }}"> #}
+            {# <input type="hidden" name="_method" value="DELETE"> #}
+            {# <button class="btn btn-danger">Supprimer</button> #}
+            {# </form></td> #}
+        {# </tr> #}
+    {# {% endfor %} #}
+    {# </table> #}
+{# </section> #}
+{#  #}
+
+<style>
+.resize{
+    width:30px;
+}
+</style>
+
+<p class="text-right">
+        <span><a href="{{ path('produit_new') }}" class="btn btn-success pr-3 pl-3 ">Nouveau Produit</a></span>
+
+</p>
+    <thead>  <table class="table table-striped">
+      <tr class="bg-dark text-light">
+        <th>Titre</th>
+        <th>Image</th>
+        <th>Prix</th>
+        <th colspan=3 class="text-center">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for produit in produits %}
+      <tr>
+        <td>{{ produit.titre }}</td>
+        <td><img src="{{ produit.images }}" alt="{{ produit.titre }}" style="width:80px;height:60px;"></td>
+        <td>{{ produit.prix }} Dh</td>
+        
+        <td class="resize"><a href="{{ path('produit_show', {'id': produit.id }) }}" class="btn btn-outline-info pr-3 pl-3">Détails</a></td>
+        <td class="resize"><a href="{{ path('produit_edit', {'id': produit.id }) }}" class="btn btn-outline-warning">Modifier</a></td>
+        <td class="resize">
+        <form method="POST" action="{{ path('produit_delete', {'id': produit.id }) }}">
+            <input type="hidden" name="_method" value="DELETE">
+            <button class="btn btn-outline-danger">Supprimer</button>
+        </form></td>
+
+      </tr>
+          {% endfor %}
+    </tbody>
+  </table>
+{# </div> #}
+
+
+{% endblock %}
