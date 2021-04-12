@@ -1,13 +1,65 @@
 {% extends 'base.html.twig' %}
 {% block body %}
+
+{# Flash Message #}
+{% for message in app.session.flashbag.get('success') %}
+    <div class="alert alert-warning col-3" role="alert">
+        {{ message }}
+    </div>
+{% endfor %}
+
+
+<div class="container">
+
     <article>
-    <h2>{{ produit.titre }}</h2>
-<div class="metadata">{{ produit.prix }} Dhs</div>
-<div class="content">
-    <img src="{{ produit.images }}" alt="">
-    <p>
-    {{ produit.description }}
-    </p>
+        <h2>{{ produit.titre }}</h2>
+        <div class="content">
+            <img src="{{ produit.images }}" alt="">
+            <div class="metadata"><b>Prix: </b>{{ produit.prix }} Dhs</div>
+            <p><b>Description: </b>
+                {{ produit.description }}
+            </p>
+
+
+    {# Affichage du button 'Contactez vendeur' que pour l'acheteur #}
+    {% if not is_granted('ROLE_ADMIN') %}
+            <button class="btn btn-outline-info pr-3 pl-3" onclick="javascript:contactForm.style.display = 'block'">Contactez le vendeur</button>
+            <div id="contactForm" class="mt-4" style="display:none;">
+        {{ form_start(form) }}
+            <div class="row">
+                <div class="col">{{ form_row(form.nom) }}</div>
+                <div class="col">{{ form_row(form.telephone) }}</div>
+            </div>
+            <div class="row">
+                <div class="col">{{ form_row(form.email) }}</div>
+            </div>
+            <div class="row">
+                <div class="col">{{ form_row(form.message) }}</div>
+            </div>
+            {{ form_rest(form)}}
+            <div class="form-group">
+                <button class="btn btn-info">Envoyer</button>
+            </div>
+        {{ form_end(form) }}
+    </div>
+    {% endif %}
+
+    {# Affichage des buttons de modification et suppression que pour le vendeur #}
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="row">
+            <div class="col text-right">
+                <a href="{{ path('produit_edit', {'id': produit.id }) }}" class="btn btn-outline-warning">Modifier</a>
+            </div>
+            <div class="col">
+                <form method="POST" action="{{ path('produit_delete', {'id': produit.id }) }}">
+                <input type="hidden" name="_method" value="DELETE">
+                <button class="btn btn-outline-danger" onclick="return confirm('Attention cet article sera supprimé!')">Supprimer</button>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+    
 </div>
 </article>
+</div>
 {% endblock %}

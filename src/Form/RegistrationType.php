@@ -19,10 +19,10 @@ class RegistrationType extends AbstractType
             ->add('username')
             ->add('roles', ChoiceType::class, [
                 'choices' => [
-                    "Admin" => "ROLE_ADMIN",
-                    "Super" => "ROLE_SUPER_ADMIN",
+                    "Vendeur" => "ROLE_ADMIN",
+                    "Acheteur" => "ROLE_USER",
                 ],
-                // 'expanded'  => false, // liste déroulante
+                'expanded'  => true, // liste déroulante
                 'multiple'  => true, // choix multiple
             ])
             ->add('password', PasswordType::class)

@@ -2,6 +2,8 @@
 
 {% block body %}
 
+<div class="container">
+
     <h1>Connectez-vous</h1>
     <form action="{{ path('security_login') }}" method="POST">
         <div class="form-group">
@@ -10,9 +12,15 @@
         <div class="form-group">
             <input type="password" placeholder="Mot de passe ..." required name="_password" class="form-control">
         </div>
+        <center>
         <div class="form-group">
             <button type="submit" class="btn btn-success">Connexion</button>
+            <span><a href="{{ path('security_registration') }}">Créez votre compte</a></span>
         </div>
+        </center>
     </form>
+    
+
+</div>
 
 {% endblock %}

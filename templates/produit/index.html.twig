@@ -3,30 +3,19 @@
 {% block title %}Liste des produits{% endblock %}
 
 {% block body %}
+
 <h1>Liste des produits</h1>
 
-{# <section class="articles"> #}
-    {# <table class="table"> #}
-    {# {% for produit in produits %} #}
-        {# <tr> #}
-        {# <td> #}
-        {# <h2>{{ produit.titre }}</h2> #}
-        {# <div class="content"> #}
-            {# <img src="{{ produit.images }}" alt=""> #}
-            {# <p><b>{{ produit.prix }} Dhs</b></p> #}
-        {# </div> #}
-        {# </td> #}
-        {# <td><a href="{{ path('produit_show', {'id': produit.id }) }}" class="btn btn-info">Détails</a><td> #}
-        {# <td><a href="{{ path('produit_edit', {'id': produit.id }) }}" class="btn btn-warning">Modifier</a></td> #}
-        {# <td><form method="POST" action="{{ path('produit_delete', {'id': produit.id }) }}"> #}
-            {# <input type="hidden" name="_method" value="DELETE"> #}
-            {# <button class="btn btn-danger">Supprimer</button> #}
-            {# </form></td> #}
-        {# </tr> #}
-    {# {% endfor %} #}
-    {# </table> #}
-{# </section> #}
-{#  #}
+
+<div class="container">
+
+{# Flash Message #}
+{% for message in app.session.flashbag.get('success') %}
+    <div class="alert alert-warning col-3" role="alert">
+        {{ message }}
+    </div>
+{% endfor %}
+
 
 <style>
 .resize{
@@ -34,38 +23,52 @@
 }
 </style>
 
-<p class="text-right">
-        <span><a href="{{ path('produit_new') }}" class="btn btn-success pr-3 pl-3 ">Nouveau Produit</a></span>
 
-</p>
+  {# Afficher le button 'Nouveau produit' que pour le vendeur #}
+  {% if is_granted('ROLE_ADMIN') %}
+    <p class="text-right">
+        <span><a href="{{ path('produit_new') }}" class="btn btn-success pr-3 pl-3 ">Nouveau Produit</a></span>
+    </p>
+  {% endif %}
+
+{# Liste des produits #}
     <thead>  <table class="table table-striped">
       <tr class="bg-dark text-light">
         <th>Titre</th>
         <th>Image</th>
         <th>Prix</th>
+        <th>Quantité</th>
         <th colspan=3 class="text-center">Actions</th>
       </tr>
     </thead>
+
     <tbody>
         {% for produit in produits %}
       <tr>
         <td>{{ produit.titre }}</td>
         <td><img src="{{ produit.images }}" alt="{{ produit.titre }}" style="width:80px;height:60px;"></td>
-        <td>{{ produit.prix }} Dh</td>
-        
+        <td>{{ produit.prix }} Dhs</td>
+        <td>{{ produit.quantite }} piéces restantes</td>
         <td class="resize"><a href="{{ path('produit_show', {'id': produit.id }) }}" class="btn btn-outline-info pr-3 pl-3">Détails</a></td>
+
+        {% if is_granted('ROLE_ADMIN') %}
+
         <td class="resize"><a href="{{ path('produit_edit', {'id': produit.id }) }}" class="btn btn-outline-warning">Modifier</a></td>
         <td class="resize">
         <form method="POST" action="{{ path('produit_delete', {'id': produit.id }) }}">
             <input type="hidden" name="_method" value="DELETE">
-            <button class="btn btn-outline-danger">Supprimer</button>
+            <button class="btn btn-outline-danger" onclick="return confirm('Attention cet article sera supprimé!')">Supprimer</button>
         </form></td>
 
+        {% endif %}
+        
       </tr>
           {% endfor %}
     </tbody>
   </table>
-{# </div> #}
+
+</div>
+
 
 
 {% endblock %}
