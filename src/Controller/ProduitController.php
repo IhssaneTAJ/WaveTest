@@ -6,6 +6,7 @@ use App\Entity\Contact;
 use App\Entity\Produit;
 use App\Form\ContactType;
 use App\Form\ProduitType;
+use App\Repository\ContactRepository;
 use App\Repository\ProduitRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,7 +27,9 @@ class ProduitController extends AbstractController
     {
         //Selectionner tous les articles
         return $this->render('produit/index.html.twig', [
-            'produits' => $repo->findAll()
+            'produits' => $repo->findAll(),
+            'currentMenu' => "produit"
+
         ]);
     }
 
@@ -35,7 +38,9 @@ class ProduitController extends AbstractController
      * @Route("/", name="home")
      */
     public function home(){
-        return $this->render('produit/home.html.twig');
+        return $this->render('produit/home.html.twig', [
+            'currentMenu' => "home"
+        ]);
     }
 
     /**
@@ -76,22 +81,26 @@ class ProduitController extends AbstractController
     /**
      * @Route("/produit/{id}", name="produit_show")
      */
-    public function show(Produit $produit, HttpFoundationRequest $request){
+    public function show(Produit $produit, HttpFoundationRequest $request, EntityManagerInterface $manager){
 
         //Formulaire de contact
         $contact = new Contact();
-        $contact->setProduit($produit);
         $form = $this->createForm(ContactType::class, $contact);
         $form->handleRequest($request);
 
 
         //Envoi d'email (not finished)
 
-        // if($form->isSubmitted() && $form->isValid()){
-        //     //$notification->notify($contact);
-        //     $this->addFlash('success', 'Votre message a bien été envoyé!');
-        //     return $this->redirectToRoute('produit_show', ['id' => $produit->getId()]);
-        // }
+        if($form->isSubmitted() && $form->isValid()){
+            $contact->setProduit($produit->getTitre());
+
+            $manager->persist($contact);
+            $manager->flush();
+
+
+            $this->addFlash('success', 'Votre message a bien été envoyé!');
+            return $this->redirectToRoute('produit_show', ['id' => $produit->getId()]);
+        }
 
 
         //Afficher la description d'un article
@@ -113,6 +122,21 @@ class ProduitController extends AbstractController
         $this->addFlash('warning', 'Produit supprimé avec succès!');
 
         return $this->redirectToRoute('produit');
+    }
+
+    /**
+     *
+     * @Route("/message", name="message")
+     */
+    public function showMessage(ContactRepository $repo) {
+        
+        //Selectionner tous les messages
+        return $this->render('contact/index.html.twig', [
+            'messages' => $repo->findAll(),
+            'currentMenu' => "message"
+
+        ]);
+
     }
 
 }

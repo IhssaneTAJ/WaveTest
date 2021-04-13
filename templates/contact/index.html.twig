@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Boîte de réception{% endblock %}
+
+{% block body %}
+
+
+<h1 class="text-center text-info">Liste des messages</h1>
+
+<div class="container">
+
+
+{# Flash Message #}
+{% for message in app.session.flashbag.get('success') %}
+    <div class="alert alert-warning col-3" role="alert">
+        {{ message }}
+    </div>
+{% endfor %}
+
+
+<style>
+.resize{
+    width:30px;
+}
+</style>
+
+
+ 
+
+{# Liste des messages #}
+    <thead>  <table class="table">
+      <tr class="bg-light text-dark">
+        <th>Nom du client</th>
+        <th>Téléphone</th>
+        <th>Email</th>
+        <th>Message</th>
+        <th>Produit</th>
+      </tr>
+    </thead>
+
+    <tbody>
+        {% for message in messages %}
+      <tr>
+        <td>{{ message.nom }}</td>
+        <td>{{ message.telephone }}</td>
+        <td>{{ message.email }} Dhs</td>
+        <td>{{ message.message }} piéces restantes</td>
+        <td>{{ message.produit }}</a></td>
+      </tr>
+          {% endfor %}
+    </tbody>
+  </table>
+
+</div>
+
+
+
+{% endblock %}

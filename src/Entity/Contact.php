@@ -2,42 +2,50 @@
 
 namespace App\Entity;
 
-use Symfony\Component\Validator\Constraints as Assert;
+use App\Repository\ContactRepository;
+use Doctrine\ORM\Mapping as ORM;
 
-
-class Contact{
-    
+/**
+ * @ORM\Entity(repositoryClass=ContactRepository::class)
+ */
+class Contact
+{
     /**
-     * @var string|null
-     * @Assert\Length(min=4, max=100)
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+
+    /**
+     * @ORM\Column(type="string", length=100)
      */
     private $nom;
 
-
     /**
-    * @var string|null
-    * @Assert\Regex(pattern="/[0-9]{10}/")
-    */
+     * @ORM\Column(type="string", length=10)
+     */
     private $telephone;
 
-
     /**
-    * @var string|null
-    * @Assert\Email()
-    */
+     * @ORM\Column(type="string", length=30)
+     */
     private $email;
 
-
     /**
-    * @var string|null
-    * @Assert\Length(min=15)
-    */
+     * @ORM\Column(type="string", length=255)
+     */
     private $message;
 
-    /**
-     * @var Produit|null
+       /**
+     * @ORM\Column(type="string", length=255)
      */
     private $produit;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
     public function getNom(): ?string
     {
@@ -86,16 +94,18 @@ class Contact{
 
         return $this;
     }
-
     public function getProduit(): ?string
     {
         return $this->produit;
     }
 
-    public function setProduit(Produit $produit): self
+    public function setProduit(string $produit): self
     {
         $this->produit = $produit;
 
         return $this;
     }
+
+
+    
 }
