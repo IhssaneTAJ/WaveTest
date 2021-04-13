@@ -10,15 +10,23 @@
 
 
 <div class="container">
-
+    <div class="card d-flex justify-content-center container m-5 p-5">
     <article>
-        <h2>{{ produit.titre }}</h2>
-        <div class="content">
-            <img src="{{ produit.images }}" alt="">
-            <div class="metadata"><b>Prix: </b>{{ produit.prix }} Dhs</div>
+        <div class="row">
+            <h3 class="card-title">{{ produit.titre }}</h2>
+        </div>
+        
+        <div class="content mx-auto">
+            <div class="row"><div class="col">
+            <img src="{{ asset('uploads/images/' ~ produit.images) }}" alt="{{ produit.titre }}" style="width: 600px; height: 400px;">
+            </div></div>
+            <div class="m-3">
+            <div class="p-3"><span><b>Prix: </b>{{ produit.prix }} Dhs</span>
             <p><b>Description: </b>
                 {{ produit.description }}
-            </p>
+            </p></div>
+            </div>
+            
 
 
     {# Affichage du button 'Contactez vendeur' que pour l'acheteur #}
@@ -50,7 +58,7 @@
             <div class="col text-right">
                 <a href="{{ path('produit_edit', {'id': produit.id }) }}" class="btn btn-outline-warning">Modifier</a>
             </div>
-            <div class="col">
+            <div class="col text-left">
                 <form method="POST" action="{{ path('produit_delete', {'id': produit.id }) }}">
                 <input type="hidden" name="_method" value="DELETE">
                 <button class="btn btn-outline-danger" onclick="return confirm('Attention cet article sera supprimé!')">Supprimer</button>
@@ -61,5 +69,6 @@
     
 </div>
 </article>
+</div>
 </div>
 {% endblock %}

@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 
 class ProduitController extends AbstractController
@@ -29,9 +29,10 @@ class ProduitController extends AbstractController
         return $this->render('produit/index.html.twig', [
             'produits' => $repo->findAll(),
             'currentMenu' => "produit"
-
         ]);
     }
+
+
 
     /**
      * @IsGranted("ROLE_USER")
@@ -42,6 +43,8 @@ class ProduitController extends AbstractController
             'currentMenu' => "home"
         ]);
     }
+
+
 
     /**
      * @IsGranted("ROLE_ADMIN")
@@ -61,6 +64,20 @@ class ProduitController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
+
+
+            //Upload Image
+            $file = $form->get('images')->getData();
+            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+
+            try {
+                $file->move($this->getParameter('images_directory'), $fileName);
+            } catch (FileException $e) {
+                // ... handle exception if something happens during file upload
+            }
+
+            $manager = $this->getDoctrine()->getManager();
+            $produit->setImages($fileName);
 
             $manager->persist($produit);
             $manager->flush();
@@ -103,12 +120,15 @@ class ProduitController extends AbstractController
         }
 
 
-        //Afficher la description d'un article
+        //Afficher les détails d'un article
        return $this->render('produit/show.html.twig', [
             'produit' => $produit,
             'form' => $form->createView()
         ]);
     }
+
+
+
 
     /**
     * @Route("/produit/{id}/delete", name="produit_delete", methods="DELETE")
@@ -124,6 +144,9 @@ class ProduitController extends AbstractController
         return $this->redirectToRoute('produit');
     }
 
+
+
+    
     /**
      *
      * @Route("/message", name="message")

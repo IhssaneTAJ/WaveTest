@@ -4,7 +4,7 @@
 
 <div class="container">
 
-    <h1>Connectez-vous</h1>
+    <h1 class="text-center text-info m-5">Connectez-vous</h1>
     <form action="{{ path('security_login') }}" method="POST">
         <div class="form-group">
             <input type="text" placeholder="Adresse email ..." required name="_username" class="form-control">
@@ -14,7 +14,7 @@
         </div>
         <center>
         <div class="form-group">
-            <button type="submit" class="btn btn-success">Connexion</button>
+            <button type="submit" class="btn btn-info">Connexion</button>
             <span><a href="{{ path('security_registration') }}">Créez votre compte</a></span>
         </div>
         </center>

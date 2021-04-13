@@ -4,10 +4,8 @@
 
 {% block body %}
 
-<h1>Liste des produits</h1>
+<h1 class="text-center text-info">Liste des produits</h1>
 
-
-<div class="container">
 
 {# Flash Message #}
 {% for message in app.session.flashbag.get('success') %}
@@ -17,58 +15,63 @@
 {% endfor %}
 
 
-<style>
-.resize{
-    width:30px;
-}
-</style>
+
+  
 
 
-  {# Afficher le button 'Nouveau produit' que pour le vendeur #}
+
+
+<div class="container">
+
+{# Afficher le button 'Nouveau produit' que pour le vendeur #}
   {% if is_granted('ROLE_ADMIN') %}
     <p class="text-right">
         <span><a href="{{ path('produit_new') }}" class="btn btn-success pr-3 pl-3 ">Nouveau Produit</a></span>
     </p>
   {% endif %}
+  
 
-{# Liste des produits #}
-    <thead>  <table class="table table-striped">
-      <tr class="bg-dark text-light">
-        <th>Titre</th>
-        <th>Image</th>
-        <th>Prix</th>
-        <th>Quantité</th>
-        <th colspan=3 class="text-center">Actions</th>
-      </tr>
-    </thead>
+  <div class="row">
+    <div class="col-lg-12 mx-auto">
 
-    <tbody>
+      <!-- List group-->
+      <ul class="list-group shadow">
+
         {% for produit in produits %}
-      <tr>
-        <td>{{ produit.titre }}</td>
-        <td><img src="{{ produit.images }}" alt="{{ produit.titre }}" style="width:80px;height:60px;"></td>
-        <td>{{ produit.prix }} Dhs</td>
-        <td>{{ produit.quantite }} piéces restantes</td>
-        <td class="resize"><a href="{{ path('produit_show', {'id': produit.id }) }}" class="btn btn-outline-info pr-3 pl-3">Détails</a></td>
+        <!-- list group item-->
+        <li class="list-group-item">
+          <!-- Custom content-->
+          <div class="media align-items-lg-center flex-column flex-lg-row p-3">
+            <div class="media-body order-2 order-lg-1">
+              <h5 class="mt-0 font-weight-bold mb-2">{{ produit.titre }}</h5>
+              <p class="font-italic text-muted mb-0 ">{{ produit.description }}</p>
+              <div class="d-flex align-items-center justify-content-between mt-1">
+                <h6 class="font-weight-bold my-2">{{ produit.prix }} Dhs</h6>
+                <ul class="list-inline small">
+                  <li class="list-inline-item m-0"><a href="{{ path('produit_show', {'id': produit.id }) }}" class="btn btn-outline-info pr-3 pl-3">Détails</a></li>
+                  {% if is_granted('ROLE_ADMIN') %}
+                  <li class="list-inline-item m-0"><a href="{{ path('produit_edit', {'id': produit.id }) }}" class="btn btn-outline-warning">Modifier</a></li>
+                  <li class="list-inline-item m-0">
+                      <form method="POST" action="{{ path('produit_delete', {'id': produit.id }) }}">
+                          <input type="hidden" name="_method" value="DELETE">
+                          <button class="btn btn-outline-danger" onclick="return confirm('Attention cet article sera supprimé!')">Supprimer</button>
+                      </form>
+                  </li>
+                  {% endif %}
+                  </ul>
+              </div>
+            </div><img src="{{ asset('uploads/images/' ~ produit.images) }}" alt="{{ produit.titre }}" alt="{{ produit.titre }}" width="200" class="ml-lg-5 order-1 order-lg-2">
+          </div>
+          <!-- End -->
+        </li>
+        <!-- End -->
+        {% endfor %}
 
-        {% if is_granted('ROLE_ADMIN') %}
 
-        <td class="resize"><a href="{{ path('produit_edit', {'id': produit.id }) }}" class="btn btn-outline-warning">Modifier</a></td>
-        <td class="resize">
-        <form method="POST" action="{{ path('produit_delete', {'id': produit.id }) }}">
-            <input type="hidden" name="_method" value="DELETE">
-            <button class="btn btn-outline-danger" onclick="return confirm('Attention cet article sera supprimé!')">Supprimer</button>
-        </form></td>
-
-        {% endif %}
-
-      </tr>
-          {% endfor %}
-    </tbody>
-  </table>
-
+      </ul>
+      <!-- End -->
+    </div>
+  </div>
 </div>
-
-
 
 {% endblock %}

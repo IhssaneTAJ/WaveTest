@@ -38,7 +38,7 @@ class Produit
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Url
+     * @Assert\File(mimeTypes={"image/jpeg"})
      */
     private $images;
 

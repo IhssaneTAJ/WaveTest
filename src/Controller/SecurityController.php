@@ -7,12 +7,15 @@ use App\Form\RegistrationType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+
+
 class SecurityController extends AbstractController
 {
+
+
 
     /**
      * @Route("/inscription", name="security_registration")
@@ -24,6 +27,8 @@ class SecurityController extends AbstractController
         $form = $this->createForm(RegistrationType::class, $user);
 
         $form->handleRequest($request);
+
+
         if($form->isSubmitted() && $form->isValid()){
 
             //Hasher le mot de passe
@@ -41,6 +46,8 @@ class SecurityController extends AbstractController
     }
 
 
+
+
     /**
      * @Route("/connexion", name="security_login")
      */
@@ -49,6 +56,8 @@ class SecurityController extends AbstractController
         
         return $this->render('security/login.html.twig');
     }
+
+    
 
     /**
      * @Route("/deconnexion", name="security_logout")

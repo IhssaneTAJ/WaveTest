@@ -40,11 +40,11 @@
 
     {% if not app.user %}
     <span class="nav-item float-right">
-        <a href="{{ path('security_login') }}" class="badge badge-success p-2">Login</a>
+        <a href="{{ path('security_login') }}" class="badge badge-success p-2">Se connecter</a>
     </span>      
     {% else %}
     <span class="nav-item float-right">
-        <a href="{{ path('security_logout') }}" class="badge badge-primary p-2">Logout</a>
+        <a href="{{ path('security_logout') }}" class="badge badge-danger p-2">Se déconnecter</a>
     </span>     
     {% endif %}    
     </div>
