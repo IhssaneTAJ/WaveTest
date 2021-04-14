@@ -16,12 +16,15 @@
             <h3 class="card-title">{{ produit.titre }}</h2>
         </div>
         
-        <div class="content mx-auto">
+        <div class="content  mx-auto">
             <div class="row"><div class="col">
             <img src="{{ asset('uploads/images/' ~ produit.images) }}" alt="{{ produit.titre }}" style="width: 600px; height: 400px;">
             </div></div>
             <div class="m-3">
-            <div class="p-3"><span><b>Prix: </b>{{ produit.prix }} Dhs</span>
+            <div class="p-3"><span><b>Prix: </b></span>
+            <span class="badge badge-primary p-1">{{ (produit.prix) }} Dhs</span>
+            <span class="badge badge-primary p-1">{{ (produit.prix|toEuro) }} €</span>
+
             <p><b>Description: </b>
                 {{ produit.description }}
             </p></div>

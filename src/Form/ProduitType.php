@@ -16,7 +16,7 @@ class ProduitType extends AbstractType
             ->add('titre')
             ->add('description')
             ->add('prix')
-            ->add('images', FileType::class)
+            ->add('images', FileType::class, array('data_class' => null))
             ->add('quantite')
         ;
     }

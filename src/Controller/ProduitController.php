@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 
@@ -131,13 +132,22 @@ class ProduitController extends AbstractController
 
 
     /**
+     * 
     * @Route("/produit/{id}/delete", name="produit_delete", methods="DELETE")
     */
     public function delete(Produit $produit, EntityManagerInterface $manager){
 
+        //Supprimer l'image du dossier
+        $image= $produit->getImages();
+        $filesystem = new Filesystem();
+        $path='uploads/images/'.$image;
+        $filesystem->remove($path);
+        
         //Supprimer un article
         $manager->remove($produit);
         $manager->flush();
+
+        
 
         $this->addFlash('warning', 'Produit supprimé avec succès!');
 
@@ -146,7 +156,7 @@ class ProduitController extends AbstractController
 
 
 
-    
+
     /**
      *
      * @Route("/message", name="message")
