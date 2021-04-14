@@ -132,7 +132,7 @@ class ProduitController extends AbstractController
 
 
     /**
-     * 
+    * @IsGranted("ROLE_ADMIN") 
     * @Route("/produit/{id}/delete", name="produit_delete", methods="DELETE")
     */
     public function delete(Produit $produit, EntityManagerInterface $manager){
@@ -158,7 +158,7 @@ class ProduitController extends AbstractController
 
 
     /**
-     *
+     * @IsGranted("ROLE_ADMIN")
      * @Route("/message", name="message")
      */
     public function showMessage(ContactRepository $repo) {
